@@ -3,7 +3,8 @@ RUN apk add --no-cache git zip bash
 
 # Setup php extensions
 RUN apk add --no-cache postgresql-dev \
-    && docker-php-ext-install pdo_pgsql pdo_mysql
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 ENV COMPOSER_CACHE_DIR=/tmp/composer-cache
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
