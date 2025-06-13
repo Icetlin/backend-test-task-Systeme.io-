@@ -37,17 +37,17 @@ class Coupon
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getDiscount(): ?int
+    public function getDiscount(): int
     {
         return $this->discount;
     }
