@@ -30,12 +30,12 @@ class Product
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): int
     {
         return $this->price;
     }
