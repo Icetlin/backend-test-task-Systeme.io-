@@ -27,6 +27,9 @@ class AppFixtures extends Fixture
         $c2 = new Coupon('F5', Coupon::TYPE_FIXED, 500);
         $manager->persist($c2);
 
+        $c3 = new Coupon('F6', Coupon::TYPE_PERCENTAGE, 6);
+        $manager->persist($c3);
+
         $manager->flush();
     }
 } 
