@@ -1,22 +1,72 @@
-### Calculate Price
+### === Calculate Price Endpoints ===
+
+### 1. Calculate price for Iphone (100€) with 6% coupon in Greece (24% tax)
 POST http://127.0.0.1:8337/calculate-price
 Accept: application/json
 Content-Type: application/json
 
 {
   "product": 1,
-  "taxNumber": "DE123456789",
+  "taxNumber": "GR123456789",
+  "couponCode": "D6"
+}
+
+### 2. Calculate price for Headphones (20€) with 15% coupon in Italy (22% tax)
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 2,
+  "taxNumber": "IT12345678900",
   "couponCode": "D15"
 }
 
-### Execute Purchase
+### 3. Calculate price for Phone Case (10€) with 5€ fixed coupon in Italy (22% tax)
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 3,
+  "taxNumber": "IT12345678900",
+  "couponCode": "F5"
+}
+
+### === Purchase Endpoints ===
+
+### 4. Purchase Iphone with 15% coupon in Germany (19% tax) via Paypal (should succeed)
 POST http://127.0.0.1:8337/purchase
 Accept: application/json
 Content-Type: application/json
 
 {
   "product": 1,
+  "taxNumber": "DE123456789",
+  "couponCode": "D15",
+  "paymentProcessor": "paypal"
+}
+
+
+### 5. Purchase Headphones with 15% coupon in Italy (22% tax) via Stripe (should fail)
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 2,
   "taxNumber": "IT12345678900",
   "couponCode": "D15",
+  "paymentProcessor": "stripe"
+}
+
+### 6. Purchase Phone Case (no coupon) in Greece (24% tax) via Paypal (should succeed)
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 3,
+  "taxNumber": "GR123456789",
   "paymentProcessor": "paypal"
 }
