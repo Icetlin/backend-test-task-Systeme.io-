@@ -20,5 +20,13 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Service\Payment\Adapter\PaypalAdapter:
+        tags:
+            - { name: 'app.payment_processor', key: 'paypal' }
+
+    App\Service\Payment\Adapter\StripeAdapter:
+        tags:
+            - { name: 'app.payment_processor', key: 'stripe' }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -5,16 +5,44 @@ namespace App\Service;
 use App\Entity\Coupon;
 use App\Entity\Product;
 use App\Enum\Country;
+use App\Repository\CouponRepository;
+use App\Repository\ProductRepository;
+use InvalidArgumentException;
 
 class PriceCalculatorService
 {
-    public function calculate(Product $product, ?Coupon $coupon, string $taxNumber): int
+    private ProductRepository $productRepository;
+    private CouponRepository $couponRepository;
+
+    public function __construct(ProductRepository $productRepository, CouponRepository $couponRepository)
     {
+        $this->productRepository = $productRepository;
+        $this->couponRepository = $couponRepository;
+    }
+
+    public function calculate(
+        int $productId, 
+        string $taxNumber, 
+        ?string $couponCode
+    ): int
+    {
+        $product = $this->productRepository->find($productId);
+        if (!$product) {
+            throw new InvalidArgumentException('Product not found.');
+        }
+
+        $coupon = null;
+        if ($couponCode) {
+            $coupon = $this->couponRepository->findOneBy(['code' => $couponCode]);
+            if (!$coupon) {
+                throw new InvalidArgumentException('Coupon not found.');
+            }
+        }
+
         $basePrice = $product->getPrice();
 
         $priceAfterCoupon = $this->calculatePriceAfterCoupon(basePrice: $basePrice, coupon: $coupon);
         $validPriceAfterCoupon = max(0, $priceAfterCoupon);
-
 
         $taxAmount = $this->calculateTaxAmount(price: $validPriceAfterCoupon, taxNumber: $taxNumber);
 
@@ -42,7 +70,7 @@ class PriceCalculatorService
         $country = Country::tryFromCode($countryCode);
 
         if ($country === null) {
-            throw new \InvalidArgumentException('Invalid tax number country code');
+            throw new InvalidArgumentException('Invalid tax number country code');
         }
 
         $taxRate = $country->getTaxRate();

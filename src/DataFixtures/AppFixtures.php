@@ -21,13 +21,13 @@ class AppFixtures extends Fixture
         $manager->persist($p3);
 
         // Coupons
-        $c1 = new Coupon('D15', Coupon::TYPE_PERCENTAGE, 15); // 15% discount
+        $c1 = new Coupon('D15', Coupon::TYPE_PERCENTAGE, 15);
         $manager->persist($c1);
 
         $c2 = new Coupon('F5', Coupon::TYPE_FIXED, 500);
         $manager->persist($c2);
 
-        $c3 = new Coupon('F6', Coupon::TYPE_PERCENTAGE, 6);
+        $c3 = new Coupon('D6', Coupon::TYPE_PERCENTAGE, 6);
         $manager->persist($c3);
 
         $manager->flush();
